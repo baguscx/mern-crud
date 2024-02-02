@@ -5,7 +5,7 @@ POST http://localhost:5000/api/users
 Content-Type: application/json
 
 {
-    "name" : "Bagus Cahyono",
+    "name" : "adwitya",
     "age" : "23",
     "gender" : "Male",
     "hobby" : "Coding",
