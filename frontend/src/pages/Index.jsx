@@ -18,6 +18,15 @@ const Home = () => {
       console.error(error);
     }
   };
+
+  const deleteUser = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/users/${id}`);
+      getUsers();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <h1>Data Users</h1>
@@ -49,7 +58,14 @@ const Home = () => {
                 <Link to={`edit/${user._id}`} className="btn btn-primary">
                   Edit
                 </Link>
-                <button className="btn btn-danger">Delete</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    deleteUser(user._id);
+                  }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
