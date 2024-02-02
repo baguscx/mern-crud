@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Search from "../components/search";
 
 const Home = () => {
-  const [users, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
     getUsers();
@@ -13,7 +14,8 @@ const Home = () => {
   const getUsers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/users");
-      setUser(response.data);
+      setUsers(response.data);
+      setFilteredUsers(response.data); // Set filteredUsers initially to all users
     } catch (error) {
       console.error(error);
     }
@@ -27,12 +29,24 @@ const Home = () => {
       console.error(error);
     }
   };
+
+  const onChangeSearch = (value) => {
+    const filteredUsers = users.filter((user) => {
+      return Object.values(user)
+        .join(" ")
+        .toLowerCase()
+        .includes(value.toLowerCase());
+    });
+    setFilteredUsers(filteredUsers);
+  };
+
   return (
     <>
       <h1>Data Users</h1>
       <Link to="/add" className="btn btn-success btn-sm">
         🆕 Add New
       </Link>
+      <Search onChangeSearch={onChangeSearch} />
       <table className="table table-striped table-hover">
         <thead>
           <tr>
@@ -46,7 +60,7 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <tr key={user._id}>
               <td>{index + 1}</td>
               <td>{user.name}</td>
