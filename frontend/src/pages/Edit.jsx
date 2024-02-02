@@ -1,20 +1,38 @@
 import React from "react";
 import axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-const Add = () => {
+const Edit = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [hobby, setHobby] = useState("");
   const [gender, setGender] = useState("Male");
   const [contact, setContact] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const saveUser = async (e) => {
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/users/${id}`);
+      setName(response.data.name);
+      setAge(response.data.age);
+      setHobby(response.data.hobby);
+      setGender(response.data.gender);
+      setContact(response.data.contact);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/users", {
+      await axios.patch(`http://localhost:5000/api/users/${id}`, {
         name,
         age,
         hobby,
@@ -29,15 +47,14 @@ const Add = () => {
 
   return (
     <>
-      <h1>Add User</h1>
+      <h1>Edit User</h1>
       <Link to="/" className="btn btn-success btn-sm">
         👈 Back
       </Link>
-      <form onSubmit={saveUser} action="" className="mt-3">
+      <form onSubmit={updateUser} action="" className="mt-3">
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
-            required
             type="text"
             id="name"
             className="form-control"
@@ -49,7 +66,6 @@ const Add = () => {
         <div className="form-group">
           <label htmlFor="age">Age</label>
           <input
-            required
             type="number"
             id="age"
             className="form-control"
@@ -61,7 +77,6 @@ const Add = () => {
         <div className="form-group">
           <label htmlFor="hobby">Hobby</label>
           <input
-            required
             type="text"
             id="hobby"
             className="form-control"
@@ -84,7 +99,6 @@ const Add = () => {
         <div className="form-group">
           <label htmlFor="contact">Contact</label>
           <input
-            required
             type="number"
             id="contact"
             className="form-control"
@@ -94,11 +108,11 @@ const Add = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary mt-4">
-          🐚Save Data
+          🪃Update Data
         </button>
       </form>
     </>
   );
 };
 
-export default Add;
+export default Edit;
