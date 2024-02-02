@@ -21,8 +21,8 @@ const Home = () => {
   return (
     <>
       <h1>Data Users</h1>
-      <Link to="/add" className="btn btn-primary">
-        Add User
+      <Link to="/add" className="btn btn-success btn-sm">
+        🆕 Add New
       </Link>
       <table className="table table-striped table-hover">
         <thead>
