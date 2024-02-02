@@ -1,10 +1,15 @@
-import { useState } from "react";
-import RootLayout from "./layouts/RootLayout";
+import { RouterProvider } from "react-router-dom";
+import { Router } from "./routers/index";
+import { GlobalContext } from "./context/index";
 
 function App() {
   return (
     <>
-      <RootLayout />
+      <div className="container">
+        <GlobalContext.Provider value={undefined}>
+          <RouterProvider router={Router} />
+        </GlobalContext.Provider>
+      </div>
     </>
   );
 }

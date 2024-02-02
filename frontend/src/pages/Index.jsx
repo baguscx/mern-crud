@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [users, setUser] = useState([]);
@@ -10,12 +11,19 @@ const Home = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:5000/api/users");
-    setUser(response.data);
+    try {
+      const response = await axios.get("http://localhost:5000/api/users");
+      setUser(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
       <h1>Data Users</h1>
+      <Link to="/add" className="btn btn-primary">
+        Add User
+      </Link>
       <table className="table table-striped table-hover">
         <thead>
           <tr>
@@ -38,7 +46,7 @@ const Home = () => {
               <td>{user.gender}</td>
               <td>{user.contact}</td>
               <td>
-                <button className="btn btn-success">Edit</button>
+                <button className="btn btn-primary">Edit</button>
                 <button className="btn btn-danger">Delete</button>
               </td>
             </tr>
